@@ -41,8 +41,7 @@ enum ProUpgradePresenter {
     /// already on the top tier or its plan is not yet known.
     @MainActor
     static var currentUpgradeOffer: CmuxPlanTier? {
-        guard let flow = AppDelegate.shared?.auth?.accountFlow else { return .pro }
-        return flow.upgradeOffer
+        nil // Fork: never offer an upgrade (Help menu, sidebar Help menu, command palette).
     }
 
     /// Records the click as `cmux_upgrade_entrypoint_opened` (the funnel's

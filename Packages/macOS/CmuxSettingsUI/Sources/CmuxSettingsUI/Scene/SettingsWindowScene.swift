@@ -48,7 +48,7 @@ public struct SettingsWindowRoot: View {
         // that pass runs inside `NSWindow(contentViewController:)`.
         let defaults = UserDefaults.standard
         let restoredSection = defaults.string(forKey: Self.selectedSectionDefaultsKey)
-            .flatMap(SettingsSectionID.init(rawValue:)) ?? .account
+            .flatMap(SettingsSectionID.init(rawValue:)).flatMap { $0 == .account ? nil : $0 } ?? .app
         let cloudAvailable = !ManagedDevicePolicy().isEnforced(.disableCloud)
             && runtime.hostActions.isCloudMachinesAvailable
         _mountModel = State(initialValue: mountModel ?? SettingsSectionMountModel(
@@ -86,8 +86,8 @@ public struct SettingsWindowRoot: View {
     // sibling hits inside one section must each be selectable.
     // @AppStorage (not @SceneStorage): the window is AppKit-hosted, so
     // there is no SwiftUI scene to store into (cmux issue #7777).
-    @AppStorage(SettingsWindowRoot.selectedSectionDefaultsKey) private var selectedSectionRaw: String = SettingsSectionID.account.rawValue
-    @AppStorage("selectedSettingsSidebarEntry") private var selectedSidebarEntryID: String = "section:\(SettingsSectionID.account.rawValue)"
+    @AppStorage(SettingsWindowRoot.selectedSectionDefaultsKey) private var selectedSectionRaw: String = SettingsSectionID.app.rawValue
+    @AppStorage("selectedSettingsSidebarEntry") private var selectedSidebarEntryID: String = "section:\(SettingsSectionID.app.rawValue)"
     // Legacy `SettingsRootView` binds `NavigationSplitView`'s
     // `columnVisibility` so the user can collapse the sidebar via the
     // toolbar button (or the SidebarCommands menu) and have that state

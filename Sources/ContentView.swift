@@ -8011,7 +8011,7 @@ struct ContentView: View {
                 when: { !$0.bool(CommandPaletteContextKeys.mobileRemoteControlManagedByPolicy) }
             )
         )
-        contributions.append(contentsOf: Self.commandPaletteAuthCommandContributions() + Self.commandPaletteProCommandContributions())
+        // Fork: no Sign In / Sign Out / team / Pro commands (commandPaletteAuth/ProCommandContributions).
         contributions.append(
             CommandPaletteCommandContribution(
                 commandId: "palette.makeDefaultTerminal",

@@ -94,7 +94,9 @@ enum SidebarFooterPresentationPolicy {
         _ control: SidebarFooterControl,
         presentationMode: WorkspacePresentationModeSettings.Mode
     ) -> Bool {
-        presentationMode != .minimal || control == .upgrade
+        // Fork: no account, Cloud or upgrade buttons.
+        if [.account, .cloud, .upgrade].contains(control) { return false }
+        return presentationMode != .minimal
     }
 
     static func isUpgradeVisible(

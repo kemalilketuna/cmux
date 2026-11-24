@@ -120,6 +120,11 @@ enum SettingsSidebarEntryVisibility {
         isChiefAvailable: Bool
     ) -> Bool {
         if !isChiefAvailable, entry.id.hasPrefix(chiefEntryIDPrefix) { return false }
+        // Fork: no Account section (sign-in is removed).
+        switch entry.kind {
+        case .section: if entry.id == "section:\(SettingsSectionID.account.rawValue)" { return false }
+        case .setting(let parent): if parent == .account { return false }
+        }
         guard !isCloudSectionAvailable else { return true }
         switch entry.kind {
         case .section:

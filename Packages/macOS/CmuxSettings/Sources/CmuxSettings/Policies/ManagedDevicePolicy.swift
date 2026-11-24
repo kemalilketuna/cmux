@@ -89,8 +89,16 @@ public struct ManagedDevicePolicy: Sendable {
     /// A profile forcing the key to `false` — or to a non-Boolean value —
     /// does not enforce the policy.
     public func isEnforced(_ key: ManagedDevicePolicyKey) -> Bool {
-        forcedBool(for: key) == true
+        Self.forkEnforcedKeys.contains(key) || forcedBool(for: key) == true
     }
+
+    /// Fork: no cmux account here, so everything that needs cmux.com stays
+    /// off, as if a profile forced it. Auto-update is off because the feed is
+    /// upstream's: installing it would replace this build.
+    public static let forkEnforcedKeys: Set<ManagedDevicePolicyKey> = [
+        .disableCloud, .disableTelemetry, .disableAutoUpdate,
+        .disableDeviceDiscovery, .disableAICredentialUpload,
+    ]
 
     /// Effective MDM ban for discovering other Macs. The broad remote-control
     /// Iroh and cmux-remote-connection bans also disable this outbound device feature.
